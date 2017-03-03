@@ -5,7 +5,7 @@ SRC_DIR 			=		../src
 TEST_DIR 			=		.
 
 CC						=		gcc
-CFLAGS				=		-Wall -std=gnu11 -ggdb
+CFLAGS				=		-Wall -std=gnu11 -ggdb3
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
