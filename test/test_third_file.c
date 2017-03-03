@@ -3,5 +3,5 @@
 
 Test(test_third, compile_check)
 {
-	cr_assert_not(1 == returns_true(), "This should fail.");
+	cr_assert_eq(false, returns_true(), "This should fail.");
 }
