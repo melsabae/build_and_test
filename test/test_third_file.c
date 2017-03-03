@@ -1,5 +1,5 @@
+#include <criterion/criterion.h>
 #include "third_file.h"
-#include "criterion.h"
 
 Test(test_third, compile_check)
 {

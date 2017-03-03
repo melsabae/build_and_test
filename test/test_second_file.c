@@ -1,8 +1,7 @@
-#include "criterion.h"
 #include "second_file.h"
+#include <criterion/criterion.h>
 
-Test(second_file, compile_test)
+Test(test_second, compile_check)
 {
-	cr_assert_fail("This should be a failure");
+	cr_assert_fail("You are a failure.");
 }
-

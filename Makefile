@@ -8,6 +8,7 @@ SRC_DIR 			=		src
 
 CC						=		gcc
 CFLAGS				=		-O3 -Wall -std=gnu11
+DFLAGS				=		-Wall -std=gnu11 -g
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
@@ -24,7 +25,10 @@ _RELEASE			=		the_program
 RELEASE 			=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
 DEBUG					=		$(patsubst %, %_dbg, $(RELEASE))
 
-all: .PHONY $(RELEASE)
+all: .PHONY $(RELEASE) $(DEBUG)
+
+release: $(RELEASE)
+debug: $(DEBUG)
 
 .PHONY: tree_setup 
 tree_setup:
@@ -38,25 +42,16 @@ tree_setup:
 
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(OBJECTS) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
+	strip -sxX $(RELEASE)
 
-$(TESTS): $(TEST_OBJECTS)
+$(DEBUG): $(OBJECTS)
+	$(CC) -o $(DEBUG) $(OBJECTS) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c -o $@ $? $(CFLAGS)
-	chmod -x $@ $?
+	$(CC) -c -o $@ $? $(CFLAGS) $(IDIR)
 
-$(SRC_DIR)/%.c: $(SRC_DIR)/%.h
-	chmod -x $@ $<
-
-$(TEST_BUILD_DIR)/test_%.o: $(TEST_DIR)/test_%.c $(OBJ_DIR)/%.o
-	$(CC) -c -o $@ $< $(TEST_CFLAGS) $(TEST_LDIR) $(TEST_IDIR)
-
-	$(CC) -o $(patsubst $(TEST_BUILD_DIR)/%.o, $(TEST_DIR)/%, $@) \
-	$< $(patsubst $(TEST_BUILD_DIR)/test_%.o, $(OBJ_DIR)/%.o, $@) \
-	$(TEST_CFLAGS) $(TEST_LDIR) $(TEST_IDIR) $(TEST_LFLAGS)
-
-	chmod -x $@ $<
+$(SRC_DIR)/%.c: $(INC_DIR)/%.h
 
 clean:
-	$(RM) $(RELEASE) $(OBJECTS) $(TEST_OBJECTS)
+	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS)
 
