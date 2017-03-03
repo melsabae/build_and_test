@@ -24,18 +24,21 @@ TEST_SOURCES	=		$(patsubst %, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
 TEST_OBJECTS 	= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%.o, $(_TEST_SOURCE))
 TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
 
-all: .PHONY $(TEST_OBJECTS)
+ALL_TEST			=		test_all
+
+all: .PHONY $(TESTS)
 
 .PHONY:
 	cd .. && $(MAKE) check
 
+$(TESTS): $(TEST_OBJECTS)
+	$(CC) -o $(ALL_TEST) $(TEST_OBJECTS) $(OBJECTS) $(CFLAGS) $(LDIR) $(LFLAGS)
+
 $(TEST_DIR)/$(TEST_PRE)%.o: $(TEST_DIR)/$(TEST_PRE)%.c
 	$(CC) -c -o $@ $< $(CFLAGS) $(IDIR)
-	$(CC) -o $(patsubst %.o, %, $@) $@ $(OBJECTS) \
-		$(CFLAGS) $(IDIR) $(LDIR) $(LFLAGS)
 
 $(TEST_DIR)/$(TEST_PRE)%.c: $(INC_DIR)/%.h
 
 clean:
-	$(RM) $(TESTS) $(TEST_OBJECTS)
+	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST)
 
