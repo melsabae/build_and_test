@@ -31,7 +31,8 @@ all: .PHONY $(TEST_OBJECTS)
 
 $(TEST_DIR)/$(TEST_PRE)%.o: $(TEST_DIR)/$(TEST_PRE)%.c
 	$(CC) -c -o $@ $< $(CFLAGS) $(IDIR)
-	$(CC) -o $(patsubst %.o, %, $@) $@ $(OBJECTS) $(CFLAGS) $(IDIR) $(LDIR) $(LFLAGS)
+	$(CC) -o $(patsubst %.o, %, $@) $@ $(OBJECTS) \
+		$(CFLAGS) $(IDIR) $(LDIR) $(LFLAGS)
 
 $(TEST_DIR)/$(TEST_PRE)%.c: $(INC_DIR)/%.h
 
