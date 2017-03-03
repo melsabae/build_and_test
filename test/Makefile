@@ -24,7 +24,7 @@ TEST_SOURCES	=		$(patsubst %, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
 TEST_OBJECTS 	= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%.o, $(_TEST_SOURCE))
 TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
 
-all: .PHONY $(TEST_OBJECTS) 
+all: .PHONY $(TEST_OBJECTS)
 
 .PHONY:
 	cd .. && $(MAKE) check
