@@ -12,7 +12,7 @@ DFLAGS				=		-Wall -std=gnu11 -g
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
-LFLAGS				=		
+LFLAGS				=
 
 _SOURCES			+=	main.c
 _SOURCES			+=	second_file.c
@@ -30,7 +30,7 @@ all: .PHONY $(RELEASE) $(DEBUG)
 release: $(RELEASE)
 debug: $(DEBUG)
 
-.PHONY: tree_setup 
+.PHONY: tree_setup check
 tree_setup:
 	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(BUILD_DIR)
@@ -39,6 +39,9 @@ tree_setup:
 	@mkdir -p $(LIB_DIR)
 	@mkdir -p $(SPIKE_DIR)
 	@mkdir -p $(SRC_DIR)
+
+check: $(OBJECTS) $(HEADERS)
+
 
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(OBJECTS) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
