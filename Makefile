@@ -26,12 +26,12 @@ _RELEASE					=		the_program
 RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
 DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
 
-all: .PHONY $(RELEASE) $(DEBUG)
+all: .PHONY check $(RELEASE) $(DEBUG)
 
 release: $(RELEASE)
 debug: $(DEBUG)
 
-.PHONY: tree_setup check
+.PHONY: tree_setup
 tree_setup:
 	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(BUILD_DIR)
@@ -41,16 +41,16 @@ tree_setup:
 	@mkdir -p $(SPIKE_DIR)
 	@mkdir -p $(SRC_DIR)
 
-check: $(COMPILED_HEADERS) $(OBJECTS)
+check: $(HEADERS) $(COMPILED_HEADERS) $(OBJECTS)
 
-$(COMPILED_HEADERS): $(HEADERS)
+$(COMPILED_HEADERS):
 	$(CC) -c -x c-header $(HEADERS)
 
-$(RELEASE): $(COMPILED_HEADERS) $(OBJECTS)
+$(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(OBJECTS) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
 	strip -sxX $(RELEASE)
 
-$(DEBUG): $(COMPILED_HEADERS) $(OBJECTS)
+$(DEBUG): $(OBJECTS)
 	$(CC) -o $(DEBUG) $(OBJECTS) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
