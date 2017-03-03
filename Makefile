@@ -8,7 +8,7 @@ SRC_DIR 			=		src
 
 CC						=		gcc
 CFLAGS				=		-O3 -Wall -std=gnu11
-DFLAGS				=		-Wall -std=gnu11 -g
+DFLAGS				=		-Wall -std=gnu11 -ggdb
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
@@ -51,7 +51,7 @@ $(DEBUG): $(OBJECTS)
 	$(CC) -o $(DEBUG) $(OBJECTS) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c -o $@ $? $(CFLAGS) $(IDIR)
+	$(CC) -c -o $@ $? $(IDIR)
 
 $(SRC_DIR)/%.c: $(INC_DIR)/%.h
 
