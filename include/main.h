@@ -24,8 +24,8 @@
 bool main_param_generator(const bool PARAM);
 
 
-/*! \brief example_struct_t
- *	This struct represents nothing at all.
+/*! \struct example_struct_t
+ * \brief	This struct represents nothing at all.
  *
  * Use to your heart's content.
  */
