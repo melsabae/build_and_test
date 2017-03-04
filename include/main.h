@@ -6,24 +6,13 @@
  *
  *  Contains macros for doubling numeric types, a global state variable
  *  and a typedef'd structure for no particular reason.
- */
-
-
-/*! \namespace \<inttypes.h>
- * \brief for uintx_t and intx_t types and their printing macros
+ *
+ *  \remark <inttypes.h> for uintx_t, intx_t types and their printing macros
+ *	\remark <stdbool.h> for boolean access
+ *	\remark <arpa/inet.h> for ntohs and htons functions
  */
 #include <inttypes.h>
-
-
-/*! \namespace \<stdbool.h>
- * \brief for booleans
- */
 #include <stdbool.h>
-
-
-/*! \namespace \<arpa\inet.h>
- * \brief for htons and ntohs functions
- */
 #include <arpa/inet.h>
 
 /*! \fn main_param_generator(bool PARAM)
@@ -93,6 +82,10 @@ int buggy_needs_testing(void);
  * \brief A function that takes input and puts it in output
  * \param[in] input the input
  * \param[out] output the input once again
+ * @pre input not NULL, output not NULL
+ * @post output has input, input not modified
+ * @side well i modified your pointers, sir or madam, you tell me
+ * \invariant input not gonna be mutated i promise
  */
 void pointy_function(void* input, void* output);
 
