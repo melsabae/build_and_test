@@ -21,10 +21,18 @@
 #include <stdbool.h>
 
 
-/*! \namespace \<arpa/inet.h>
+/*! \namespace \<arpa\inet.h>
  * \brief for htons and ntohs functions
  */
 #include <arpa/inet.h>
+
+/*! \fn main_param_generator(bool PARAM)
+ * \brief A software buffer
+ * \param PARAM The boolean to be generated
+ *
+ * \return PARAM.
+ */
+bool main_param_generator(const bool PARAM);
 
 
 /*! \brief example_struct_t
@@ -50,26 +58,42 @@ volatile int global_int = 0; /*!< additional information, like why 0 is cool
 
 /*! \def DOUBLE_RESULT
  * \param x a numeric type
- *
- * Returns x * 2, without modifying x.
+ * \return x * 2, without modifying x.
  */
 #define DOUBLE_RESULT(x) (2.0f * x)
 
 /*! \def DOUBLE_STORE
  * \param x a numeric type
- *
- * Returns x * 2, and changes x.
+ * \return x * 2, and changes x.
  */
 #define DOUBLE_STORE(x) (x *= 2.0f)
 
 
-/*! \fn main_param_generator(bool PARAM)
- * \brief Returns PARAM.
- * \param PARAM The boolean to be generated
+/*! \fn main_param_negator(bool, bool*)
+ * \brief A software NOT gate
+ * \param PARAM any boolean
+ * \param[out] param a pointer to a boolean
+ * \return PARAM not
  *
- * Returns PARAM. Cannot modify PARAM. State is guaranteed to not change
- * by this function call.
+ * Notice this link?
+ * #DOUBLE_RESULT
  */
-bool main_param_generator(const bool PARAM);
+bool main_param_negator(const bool PARAM, bool* const param);
+
+
+/*! \fn buggy_needs_testing(void)
+ * \brief a dummy function by dummy programmer that returns 2
+ * \test Returns 0
+ * \bug Does not do the function it was supposed to
+ */
+int buggy_needs_testing(void);
+
+
+/*! \fn pointy_function(void*, void*)
+ * \brief A function that takes input and puts it in output
+ * \param[in] input the input
+ * \param[out] output the input once again
+ */
+void pointy_function(void* input, void* output);
 
 #endif
