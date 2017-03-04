@@ -5,15 +5,29 @@
 
 int main()
 {
-	if(returns_true() != true)
+	second_print();
+	third_print();
+
+	if(true == second_true_generator())
 	{
-		puts("this shouldn't have happened");
+		puts("second true generator works fine");
 	}
 	else
 	{
-		puts("i expect no less");
+		puts("second true generator does not work fine");
 	}
 
-	puts(">>");
+	if(true == third_true_generator())
+	{
+		puts("third true generator works fine");
+	}
+	else
+	{
+		puts("third true generator does not work fine");
+	}
+
+	puts("finished checks");
+
+
 	return 0;
 }

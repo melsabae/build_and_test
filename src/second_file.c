@@ -1,7 +1,18 @@
-#include "second_file.h"
 #include <stdio.h>
+#include "second_file.h"
 
-void print_thing(void)
+void second_print(void)
 {
-	printf("%s\n", __FUNCTION__);
+	puts(__FILE__);
 }
+
+bool second_true_generator(void)
+{
+	return true;
+}
+
+bool second_false_generator(void)
+{
+	return false;
+}
+

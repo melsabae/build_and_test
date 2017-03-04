@@ -43,7 +43,7 @@ tree_setup:
 
 check: $(HEADERS) $(COMPILED_HEADERS) $(OBJECTS)
 
-$(COMPILED_HEADERS):
+$(COMPILED_HEADERS): $(HEADERS)
 	$(CC) -c -x c-header $(HEADERS)
 
 $(RELEASE): $(OBJECTS)

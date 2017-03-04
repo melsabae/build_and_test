@@ -3,5 +3,6 @@
 
 Test(test_third, compile_check)
 {
-	cr_assert_eq(false, returns_true(), "This should fail.");
+	cr_assert_eq(true, third_true_generator(), "third true gen");
+	cr_assert_eq(false, third_false_generator(), "third false gen");
 }
