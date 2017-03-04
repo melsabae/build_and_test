@@ -1,6 +1,10 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include <inttypes.h>
+#include <stdbool.h>
+#include <arpa/inet.h>
+
 /*! \file main.h
  *  \brief Contains globally accessible items throughout the program
  *
@@ -11,9 +15,6 @@
  *	\remark <stdbool.h> for boolean access
  *	\remark <arpa/inet.h> for ntohs and htons functions
  */
-#include <inttypes.h>
-#include <stdbool.h>
-#include <arpa/inet.h>
 
 /*! \fn main_param_generator(bool PARAM)
  * \brief A software buffer
@@ -35,6 +36,14 @@ typedef struct
 	uint16_t two_byte;
 	uint32_t three_byte;
 } example_struct_t;
+
+
+/*! \struct example_struct
+ * \brief i made this\n
+ *	notice how in the docs it links to the definition of what this struct is\n
+ *	real neat
+ */
+example_struct_t example_struct;
 
 /*! \var global_int
  * \brief A global state likely to be abused
@@ -88,5 +97,9 @@ int buggy_needs_testing(void);
  * \invariant input not gonna be mutated i promise
  */
 void pointy_function(void* input, void* output);
+
+/*! \example main.h
+ *	assert(true == main_param_generator(true))
+ */
 
 #endif
