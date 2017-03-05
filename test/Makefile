@@ -28,7 +28,7 @@ ALL_TEST			=		test_all
 all: .PHONY $(ALL_TEST)
 
 .PHONY:
-	cd .. && $(MAKE) check
+	cd .. && $(MAKE) test
 
 $(ALL_TEST): $(TEST_OBJECTS)
 	$(CC) -o $(ALL_TEST) $(TEST_OBJECTS) $(OBJECTS) $(CFLAGS) $(LDIR) $(LFLAGS)
