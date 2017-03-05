@@ -3,6 +3,16 @@
 #include "third_file.h"
 #include <stdio.h>
 
+unsigned int fib(int n)
+{
+	if(2 >= n)
+	{
+		return n;
+	}
+
+	return fib(n - 1) + fib(n - 2);
+}
+
 int main()
 {
 	second_print();
@@ -30,6 +40,11 @@ int main()
 
 
 	// can you read this?
+
+	for(int i = 0; i < 30; i++)
+	{
+		fib(i);
+	}
 
 
 	return 0;
