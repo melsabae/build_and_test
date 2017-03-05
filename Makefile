@@ -8,7 +8,8 @@ SRC_DIR 					=		src
 
 CC								=		gcc
 CFLAGS						=		-O3 -Wall -std=gnu11
-DFLAGS						=		-Wall -std=gnu11 -ggdb3
+DFLAGS						=		-Wall -std=gnu11 -ggdb3 -Og
+PFLAGS						=		-fprofile-arcs -ftest-coverage -O0
 
 IDIR							=		-I $(INC_DIR)
 LDIR							=		-L $(LIB_DIR)
