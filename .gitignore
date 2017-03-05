@@ -1,4 +1,5 @@
 *.o
 *.swp
 !.gitignore
-the_program
+*.gcov
+gmon.out
