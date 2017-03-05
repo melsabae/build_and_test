@@ -8,12 +8,16 @@ SRC_DIR 					=		src
 DBG_DIR						=		$(BUILD_DIR)/debug
 
 CC								=		gcc
-CFLAGS						=		-O3 -Wall -std=gnu11
-DFLAGS						=		-Wall -std=gnu11 -ggdb3 -Og -pg -coverage
+CFLAGS						=		-O3 -Wall -Wextra -std=gnu11
+DFLAGS						=		-Wall -Wextra -std=gnu11 -ggdb3 -Og -pg -coverage
 
 IDIR							=		-I $(INC_DIR)
 LDIR							=		-L $(LIB_DIR)
 LFLAGS						=
+
+_RELEASE					=		the_program
+RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
+DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
 
 _SOURCES					+=	main.c
 _SOURCES					+=	second_file.c
@@ -24,12 +28,7 @@ COMPILED_HEADERS	=		$(patsubst $(INC_DIR)/%, $(BUILD_DIR)/%.gch, $(HEADERS))
 OBJECTS						=		$(patsubst %.c, $(BUILD_DIR)/%.o, $(_SOURCES))
 DOBJECTS					=		$(patsubst %.c, $(DBG_DIR)/%.o, $(_SOURCES))
 GCNOS 						=		$(patsubst %.o, %.gcno, $(DOBJECTS))
-
-_RELEASE					=		the_program
-RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
-DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
-
-.PRECIOUS: $(COMPILED_HEADERS)
+DOXYFILE 					=		Doxyfile
 
 all: tree_setup $(RELEASE) $(DEBUG)
 
@@ -44,9 +43,11 @@ debug: $(DEBUG)
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
 	strip -sxX $(RELEASE)
+	doxygen $(DOXYFILE)
 
 $(DEBUG): $(DOBJECTS)
 	$(CC) -o $(DEBUG) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(DOBJECTS)
+	doxygen $(DOXYFILE)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/%.h.gch
 	$(CC) -c -o $@ $(IDIR) $(CFLAGS) $<
@@ -54,12 +55,12 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/%.h.gch
 $(DBG_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/%.h.gch
 	$(CC) -c -o $@ $(IDIR) $(DFLAGS) $<
 
-$(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h 
+$(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 	$(CC) -c -x c-header -o $@ $<
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/*
-	$(RM) gmon.out *.c.gcov
+	$(RM) gmon.out *.gcov
 
 profile: $(DEBUG)
 	./tools/profile.sh 100
@@ -67,4 +68,5 @@ profile: $(DEBUG)
 coverage: $(DEBUG)
 	$(DEBUG) 2>&1 > /dev/null
 	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
+
 
