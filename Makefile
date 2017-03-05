@@ -9,7 +9,6 @@ SRC_DIR 					=		src
 CC								=		gcc
 CFLAGS						=		-O3 -Wall -std=gnu11
 DFLAGS						=		-Wall -std=gnu11 -ggdb3 -Og
-PFLAGS						=		-fprofile-arcs -ftest-coverage -O0
 
 IDIR							=		-I $(INC_DIR)
 LDIR							=		-L $(LIB_DIR)
@@ -27,17 +26,17 @@ _RELEASE					=		the_program
 RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
 DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
 
-all: tree_setup check $(RELEASE) $(DEBUG)
+.PRECIOUS: $(COMPILED_HEADERS)
 
-tree_setup: $(BIN_DIR) $(BUILD_DIR) $(DOC_DIR) $(INC_DIR) $(LIB_DIR) \
-	$(SPIKE_DIR) $(SRC_DIR)
+all: tree_setup $(RELEASE) $(DEBUG)
 
-check: $(OBJECTS)
+tree_setup:
+	@mkdir -p $(BIN_DIR) $(BUILD_DIR) $(DOC_DIR) $(INC_DIR) $(LIB_DIR) \
+		$(SPIKE_DIR) $(SRC_DIR)
 
+test: $(OBJECTS)
 release: $(RELEASE)
 debug: $(DEBUG)
-
-.PRECIOUS: $(COMPILED_HEADERS)
 
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
