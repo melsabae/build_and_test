@@ -1,16 +1,17 @@
 #!/bin/sh
 
-pushd $(realpath $(dirname $0))
 
 limit=0
 
 if [ $# -eq 0 ]; then
-	limit=100;
+	echo "the_program profiler"
+	echo "usage:" $0 "<limit>"
+	exit
 else
 	limit=$1
 fi
 
-echo $limit
+pushd $(realpath $(dirname $0))
 
 for i in $(seq 1 $limit); do
 	../bin/the_program_dbg 2>&1 > /dev/null;
@@ -19,5 +20,7 @@ done
 
 gprof -s ../bin/the_program_dbg gmon.out.*
 gprof -lbp ../bin/the_program_dbg gmon.sum
+
+rm gmon.*
 
 popd
