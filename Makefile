@@ -8,7 +8,7 @@ SRC_DIR 					=		src
 
 CC								=		gcc
 CFLAGS						=		-O3 -Wall -std=gnu11
-DFLAGS						=		-Wall -std=gnu11 -ggdb3 -Og
+DFLAGS						=		-Wall -std=gnu11 -ggdb3 -Og -pg
 
 IDIR							=		-I $(INC_DIR)
 LDIR							=		-L $(LIB_DIR)
