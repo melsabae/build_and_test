@@ -20,44 +20,37 @@ _SOURCES					+=	second_file.c
 _SOURCES					+=	third_file.c
 SOURCES 					=		$(patsubst %, $(SRC_DIR)/%, $(_SOURCES))
 HEADERS						=		$(patsubst %.c, $(INC_DIR)/%.h, $(_SOURCES))
-COMPILED_HEADERS	=		$(patsubst %, %.gch, $(HEADERS))
+COMPILED_HEADERS	=		$(patsubst $(INC_DIR)/%, $(BUILD_DIR)/%.gch, $(HEADERS))
 OBJECTS						=		$(patsubst %.c, $(BUILD_DIR)/%.o, $(_SOURCES))
 
 _RELEASE					=		the_program
 RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
 DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
 
-all: .PHONY check $(RELEASE) $(DEBUG)
+all: tree_setup check $(RELEASE) $(DEBUG)
+
+tree_setup: $(BIN_DIR) $(BUILD_DIR) $(DOC_DIR) $(INC_DIR) $(LIB_DIR) \
+	$(SPIKE_DIR) $(SRC_DIR)
+
+check: $(OBJECTS)
 
 release: $(RELEASE)
 debug: $(DEBUG)
 
-.PHONY: tree_setup
-tree_setup:
-	@mkdir -p $(BIN_DIR)
-	@mkdir -p $(BUILD_DIR)
-	@mkdir -p $(DOC_DIR)
-	@mkdir -p $(INC_DIR)
-	@mkdir -p $(LIB_DIR)
-	@mkdir -p $(SPIKE_DIR)
-	@mkdir -p $(SRC_DIR)
-
-check: $(HEADERS) $(COMPILED_HEADERS) $(OBJECTS)
-
-$(COMPILED_HEADERS): $(HEADERS)
-	$(CC) -c -x c-header $(HEADERS)
+.PRECIOUS: $(COMPILED_HEADERS)
 
 $(RELEASE): $(OBJECTS)
-	$(CC) -o $(RELEASE) $(OBJECTS) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
+	$(CC) -o $(RELEASE) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
 	strip -sxX $(RELEASE)
 
 $(DEBUG): $(OBJECTS)
-	$(CC) -o $(DEBUG) $(OBJECTS) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS)
+	$(CC) -o $(DEBUG) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c -o $@ $? $(IDIR) $(DFLAGS)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/%.h.gch
+	$(CC) -c -o $@ $(IDIR) $(DFLAGS) $<
 
-$(SRC_DIR)/%.c: $(INC_DIR)/%.h
+$(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h 
+	$(CC) -c -x c-header -o $@ $<
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS)
