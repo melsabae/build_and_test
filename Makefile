@@ -52,5 +52,5 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 	$(CC) -c -x c-header -o $@ $<
 
 clean:
-	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS)
+	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(BIN_DIR)/gmon.*
 

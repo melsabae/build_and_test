@@ -102,4 +102,6 @@ void pointy_function(void* input, void* output);
  *	assert(true == main_param_generator(true))
  */
 
+unsigned int fib(int n);
+
 #endif
