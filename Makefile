@@ -19,16 +19,15 @@ _RELEASE					=		the_program
 RELEASE 					=		$(patsubst %, $(BIN_DIR)/%, $(_RELEASE))
 DEBUG							=		$(patsubst %, %_dbg, $(RELEASE))
 
-_SOURCES					+=	main.c
-_SOURCES					+=	second_file.c
-_SOURCES					+=	third_file.c
-SOURCES 					=		$(patsubst %, $(SRC_DIR)/%, $(_SOURCES))
-HEADERS						=		$(patsubst %.c, $(INC_DIR)/%.h, $(_SOURCES))
+SOURCES 					=		$(wildcard $(SRC_DIR)/*.c)
+HEADERS						=		$(patsubst $(SRC_DIR)/%.c, $(INC_DIR)/%.h, $(SOURCES))
 COMPILED_HEADERS	=		$(patsubst $(INC_DIR)/%, $(BUILD_DIR)/%.gch, $(HEADERS))
-OBJECTS						=		$(patsubst %.c, $(BUILD_DIR)/%.o, $(_SOURCES))
-DOBJECTS					=		$(patsubst %.c, $(DBG_DIR)/%.o, $(_SOURCES))
+OBJECTS						=		$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
+DOBJECTS					=		$(patsubst $(SRC_DIR)/%.c, $(DBG_DIR)/%.o, $(SOURCES))
 GCNOS 						=		$(patsubst %.o, %.gcno, $(DOBJECTS))
 DOXYFILE 					=		Doxyfile
+
+.PRECIOUS: $(COMPILED_HEADERS)
 
 all: tree_setup $(RELEASE) $(DEBUG)
 
@@ -68,5 +67,4 @@ profile: $(DEBUG)
 coverage: $(DEBUG)
 	$(DEBUG) 2>&1 > /dev/null
 	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
-
 
