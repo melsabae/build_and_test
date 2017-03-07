@@ -22,21 +22,16 @@ int main()
 	{
 		puts("second true generator works fine");
 	}
-	else
-	{
-		puts("second true generator does not work fine");
-	}
 
 	if(true == third_true_generator())
 	{
 		puts("third true generator works fine");
 	}
-	else
-	{
-		puts("third true generator does not work fine");
-	}
 
 	puts("finished checks");
+
+	third_false_generator();
+	second_false_generator();
 
 
 	// can you read this?

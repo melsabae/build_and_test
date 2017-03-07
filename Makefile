@@ -5,6 +5,7 @@ INC_DIR						=		include
 LIB_DIR 					=		lib
 SPIKE_DIR 				=		spike
 SRC_DIR 					=		src
+COV_DIR						=		gcov
 DBG_DIR						=		$(BUILD_DIR)/debug
 
 CC								=		gcc
@@ -30,12 +31,13 @@ DOXYFILE 					=		Doxyfile
 .PRECIOUS: $(COMPILED_HEADERS)
 
 all: tree_setup $(RELEASE) $(DEBUG)
+dobjects: $(DOBJECTS)
 
 tree_setup:
 	@mkdir -p $(BIN_DIR) $(BUILD_DIR) $(DOC_DIR) $(INC_DIR) $(LIB_DIR) \
-		$(SPIKE_DIR) $(SRC_DIR) $(DBG_DIR)
+		$(SPIKE_DIR) $(SRC_DIR) $(DBG_DIR) $(COV_DIR)
 
-test: $(OBJECTS)
+test: $(DEBUG)
 release: $(RELEASE)
 debug: $(DEBUG)
 
@@ -59,12 +61,17 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/*
-	$(RM) gmon.out *.gcov
+	$(RM) $(COV_DIR)/*  -rf
 
 profile: $(DEBUG)
 	./tools/profile.sh 100
 
-coverage: $(DEBUG)
-	$(DEBUG) 2>&1 > /dev/null
+coverage: tree_setup $(DEBUG)
 	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
+
+lcov: coverage
+	lcov -c -b . -d $(DBG_DIR) -o gcov/lcov
+
+cov_html: lcov
+	genhtml gcov/lcov -o gcov
 

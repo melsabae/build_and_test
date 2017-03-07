@@ -3,9 +3,10 @@ INC_DIR				=		../include
 LIB_DIR 			=		../lib
 SRC_DIR 			=		../src
 TEST_DIR 			=		.
+DBG_DIR				=		$(BUILD_DIR)/debug
 
 CC						=		gcc
-CFLAGS				=		-Wall -std=gnu11 -ggdb3
+CFLAGS				=		-Wall -std=gnu11 -ggdb3 -O0 -coverage
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
@@ -15,7 +16,7 @@ _SOURCES      +=  second_file.c
 _SOURCES      +=  third_file.c
 SOURCES       =   $(patsubst %, $(SRC_DIR)/%, $(_SOURCES))
 HEADERS       =   $(patsubst %.c, $(INC_DIR)/%.h, $(_SOURCES))
-OBJECTS       =   $(patsubst %.c, $(BUILD_DIR)/%.o, $(_SOURCES))
+OBJECTS       =   $(patsubst %.c, $(DBG_DIR)/%.o, $(_SOURCES))
 
 _TEST_SOURCE	+=	second_file.c
 _TEST_SOURCE	+=	third_file.c
@@ -39,5 +40,5 @@ $(TEST_DIR)/$(TEST_PRE)%.o: $(TEST_DIR)/$(TEST_PRE)%.c
 $(TEST_DIR)/$(TEST_PRE)%.c: $(INC_DIR)/%.h
 
 clean:
-	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST)
+	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST) *.gcno *.gcda
 
