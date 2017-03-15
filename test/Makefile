@@ -12,33 +12,39 @@ IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
 LFLAGS				=		-lcriterion
 
-_SOURCES      +=  second_file.c
-_SOURCES      +=  third_file.c
-SOURCES       =   $(patsubst %, $(SRC_DIR)/%, $(_SOURCES))
-HEADERS       =   $(patsubst %.c, $(INC_DIR)/%.h, $(_SOURCES))
-OBJECTS       =   $(patsubst %.c, $(DBG_DIR)/%.o, $(_SOURCES))
+PRE 					=		test_
+_SOURCE 			=		$(wildcard $(SRC_DIR)/*.c)
+SOURCES 			=		$(patsubst %main.c, , $(_SOURCE))
+HEADERS       =   $(patsubst $(SRC_DIR)/%.c, $(INC_DIR)/%.h, $(SOURCES))
+OBJECTS       =   $(patsubst $(SRC_DIR)/%.c, $(DBG_DIR)/%.o, $(SOURCES))
 
-_TEST_SOURCE	+=	second_file.c
-_TEST_SOURCE	+=	third_file.c
-TEST_PRE			=		test_
-TEST_SOURCES	=		$(patsubst %, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
-TEST_OBJECTS 	= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%.o, $(_TEST_SOURCE))
-TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(TEST_PRE)%, $(_TEST_SOURCE))
+_TEST_SOURCE 	+=	$(PRE)second_file.c
+_TEST_SOURCE 	+=	$(PRE)third_file.c
+_TEST_SOURCE 	+=	$(PRE)poorly_formatted.c
+
+TEST_SOURCES 	=		$(patsubst %.c, $(TEST_DIR)/%.c, $(_TEST_SOURCE))
+TEST_OBJECTS 	= 	$(patsubst %.c, %.o, $(TEST_SOURCES))
+COV_OBJECTS		=		$(patsubst %.c, %.gcno, $(TEST_OBJECTS))
+
+TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(PRE)%, $(TEST_SOURCES))
 ALL_TEST			=		test_all
 
-all: .PHONY $(ALL_TEST)
+all: $(ALL_TEST)
 
-.PHONY:
-	cd .. && $(MAKE) test
+$(OBJECTS):
+	cd .. && $(MAKE) debug
 
-$(ALL_TEST): $(TEST_OBJECTS)
+$(ALL_TEST): $(OBJECTS) $(TEST_OBJECTS)
 	$(CC) -o $(ALL_TEST) $(TEST_OBJECTS) $(OBJECTS) $(CFLAGS) $(LDIR) $(LFLAGS)
 
-$(TEST_DIR)/$(TEST_PRE)%.o: $(TEST_DIR)/$(TEST_PRE)%.c
+$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS) $(IDIR)
 
-$(TEST_DIR)/$(TEST_PRE)%.c: $(INC_DIR)/%.h
+$(TEST_DIR)/$(PRE)%.c: $(INC_DIR)/%.h
 
 clean:
 	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST) *.gcno *.gcda
 
+coverage: $(ALL_TEST) $(COV_OBJECTS)
+	./$(ALL_TEST)
+	gcov $(TEST_SOURCES)

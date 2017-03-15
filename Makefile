@@ -62,7 +62,6 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/*
 	$(RM) $(COV_DIR)/*  -rf *.gcov gmon.out
-	$(RM) gmon.out *.gcov
 
 profile: $(DEBUG)
 	./tools/profile.sh 100

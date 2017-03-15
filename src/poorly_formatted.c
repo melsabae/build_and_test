@@ -1,49 +1,65 @@
 #include <stdlib.h>
-void Bad_function_Naming(void* Parameter);
-int camelCase(void* nothing, int something);
-int nospaces(void) {
-	return 0;
+void Bad_function_Naming (void *Parameter);
+int camelCase (void *nothing, int something);
+int nospaces (void)
+{
+  return 0;
 }
 
-int camelCase(void* nothing, int something)
+void Bad_function_Naming (void *Parameter)
 {
-	if(0)
-		nospaces();
+  for (;;)
+  {
+    return;
+  }
 
-	/*
-	  asdf
-	 */
+  ;;
+  ;;;
+  ;;
+  ;
+}
 
-	else
-		Bad_function_Naming(NULL);
+int camelCase (void *nothing, int something)
+{
+  if (0)
+    nospaces ();
 
-	do {
-		;;
-	} while(0);
+  /*
+   * asdf
+   */
 
-	switch(0)
-	{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			{
-				;;
-			}
-			break;
-default:
-			break;
-	}
+  else
+    Bad_function_Naming (NULL);
 
-	for(int i = 0; i < 7; i++);
-	{
-		;
-	}
+  do
+  {
+    ;;
+  }
+  while (0);
 
-	int longname;
-	int shortername_not, whatever;
+  switch (0)
+  {
+    case 0:
+      break;
+    case 1:
+      break;
+    case 2:
+      {
+	;;
+      }
+      break;
+    default:
+      break;
+  }
 
+  for (int i = 0; i < 7; i++) ;
+  {
+    ;
+  }
 
-	return 7;
+  int longname;
+  int shortername_not,
+    whatever;
+
+  return 7;
 }

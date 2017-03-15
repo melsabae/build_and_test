@@ -1,17 +1,17 @@
 #include "third_file.h"
 #include <stdio.h>
 
-void third_print(void)
+void third_print (void)
 {
-	puts(__FILE__);
+  puts (__FILE__);
 }
 
-bool third_true_generator(void)
+bool third_true_generator (void)
 {
-	return true;
+  return true;
 }
 
-bool third_false_generator(void)
+bool third_false_generator (void)
 {
-	return false;
+  return false;
 }
