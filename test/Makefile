@@ -24,7 +24,10 @@ _TEST_SOURCE 	+=	$(PRE)poorly_formatted.c
 
 TEST_SOURCES 	=		$(patsubst %.c, $(TEST_DIR)/%.c, $(_TEST_SOURCE))
 TEST_OBJECTS 	= 	$(patsubst %.c, %.o, $(TEST_SOURCES))
-COV_OBJECTS		=		$(patsubst %.c, %.gcno, $(TEST_OBJECTS))
+
+GCNO_OBJECTS	=		$(patsubst %.o, %.gcno, $(TEST_OBJECTS))
+GCOV_OBJECTS	=		$(patsubst %.o, %.gcov, $(TEST_OBJECTS))
+GCDA_OBJECTS	=		$(patsubst %.o, %.gcda, $(TEST_OBJECTS))
 
 TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(PRE)%, $(TEST_SOURCES))
 ALL_TEST			=		test_all
@@ -43,8 +46,8 @@ $(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 $(TEST_DIR)/$(PRE)%.c: $(INC_DIR)/%.h
 
 clean:
-	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST) *.gcno *.gcda
+	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST) $(GCNO_OBJECTS) $(GCOV_OBJECTS)
+	$(RM) $(GCDA_OBJECTS)
 
-coverage: $(ALL_TEST) $(COV_OBJECTS)
+coverage: $(ALL_TEST) $(GCNO_OBJECTS)
 	./$(ALL_TEST)
-	gcov $(TEST_SOURCES)

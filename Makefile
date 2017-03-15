@@ -40,15 +40,17 @@ tree_setup:
 test: $(DEBUG)
 release: $(RELEASE)
 debug: $(DEBUG)
+docs: $(DOCS)
 
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
 	strip -sxX $(RELEASE)
+
+$(DOCS):
 	doxygen $(DOXYFILE)
 
 $(DEBUG): $(DOBJECTS)
 	$(CC) -o $(DEBUG) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(DOBJECTS)
-	doxygen $(DOXYFILE)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/%.h.gch
 	$(CC) -c -o $@ $(IDIR) $(CFLAGS) $<
