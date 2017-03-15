@@ -6,11 +6,11 @@ TEST_DIR 			=		.
 DBG_DIR				=		$(BUILD_DIR)/debug
 
 CC						=		gcc
-CFLAGS				=		-Wall -std=gnu11 -ggdb3 -O0 -coverage
+CFLAGS				=		-Wall -std=gnu11 -ggdb3 -O0
 
 IDIR					=		-I $(INC_DIR)
 LDIR					=		-L $(LIB_DIR)
-LFLAGS				=		-lcriterion
+LFLAGS				=		-lcriterion -lgcov
 
 PRE 					=		test_
 _SOURCE 			=		$(wildcard $(SRC_DIR)/*.c)
@@ -25,14 +25,11 @@ _TEST_SOURCE 	+=	$(PRE)poorly_formatted.c
 TEST_SOURCES 	=		$(patsubst %.c, $(TEST_DIR)/%.c, $(_TEST_SOURCE))
 TEST_OBJECTS 	= 	$(patsubst %.c, %.o, $(TEST_SOURCES))
 
-GCNO_OBJECTS	=		$(patsubst %.o, %.gcno, $(TEST_OBJECTS))
-GCOV_OBJECTS	=		$(patsubst %.o, %.gcov, $(TEST_OBJECTS))
-GCDA_OBJECTS	=		$(patsubst %.o, %.gcda, $(TEST_OBJECTS))
-
 TESTS 				= 	$(patsubst %.c, $(TEST_DIR)/$(PRE)%, $(TEST_SOURCES))
 ALL_TEST			=		test_all
 
 all: $(ALL_TEST)
+	./$(ALL_TEST)
 
 $(OBJECTS):
 	cd .. && $(MAKE) debug
@@ -41,13 +38,10 @@ $(ALL_TEST): $(OBJECTS) $(TEST_OBJECTS)
 	$(CC) -o $(ALL_TEST) $(TEST_OBJECTS) $(OBJECTS) $(CFLAGS) $(LDIR) $(LFLAGS)
 
 $(TEST_DIR)/%.o: $(TEST_DIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS) $(IDIR)
+	$(CC) -c -o $@ $< $(IDIR)
 
 $(TEST_DIR)/$(PRE)%.c: $(INC_DIR)/%.h
 
 clean:
-	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST) $(GCNO_OBJECTS) $(GCOV_OBJECTS)
-	$(RM) $(GCDA_OBJECTS)
+	$(RM) $(TESTS) $(TEST_OBJECTS) $(ALL_TEST)
 
-coverage: $(ALL_TEST) $(GCNO_OBJECTS)
-	./$(ALL_TEST)
