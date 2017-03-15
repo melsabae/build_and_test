@@ -70,10 +70,7 @@ profile: $(DEBUG)
 
 coverage: tree_setup $(DEBUG)
 	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
-
-lcov: coverage
+	exec $(DEBUG)
 	lcov -c -b . -d $(DBG_DIR) -o gcov/lcov
-
-cov_html: lcov
 	genhtml gcov/lcov -o gcov
 
