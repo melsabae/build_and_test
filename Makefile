@@ -63,14 +63,15 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/*
-	$(RM) $(COV_DIR)/*  -rf *.gcov gmon.out
+	$(RM) $(COV_DIR)/*
 
 profile: $(DEBUG)
 	./tools/profile.sh 100
 
 coverage: tree_setup $(DEBUG)
 	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
-	exec $(DEBUG)
-	lcov -c -b . -d $(DBG_DIR) -o gcov/lcov
-	genhtml gcov/lcov -o gcov
+	@exec $(DEBUG)
+	@lcov -c -b . -d $(DBG_DIR) -o $(COV_DIR)/lcov
+	@genhtml $(COV_DIR)/lcov -o gcov -q --legend --demangle-cpp
+	@mv gmon.out $(COV_DIR)/
 
