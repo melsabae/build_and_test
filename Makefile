@@ -69,9 +69,9 @@ profile: $(DEBUG)
 	./tools/profile.sh 100
 
 coverage: tree_setup $(DEBUG)
-	$(foreach i, $(GCNOS), gcov -bar -s $(SRC_DIR) $i;)
-	@exec $(DEBUG)
-	@lcov -c -b . -d $(DBG_DIR) -o $(COV_DIR)/lcov
-	@genhtml $(COV_DIR)/lcov -o gcov -q --legend --demangle-cpp
-	@mv gmon.out $(COV_DIR)/
+	gcov -bfm -o $(GCNOS) -s $(SRC_DIR)
+	exec $(DEBUG)
+	lcov -c -b . -d $(DBG_DIR) -o $(COV_DIR)/lcov
+	genhtml $(COV_DIR)/lcov -o gcov -q --legend --demangle-cpp
+	mv gmon.out gcov/
 
