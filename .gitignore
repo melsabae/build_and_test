@@ -3,3 +3,5 @@
 !.gitignore
 *.gcov
 gmon.out
+.ycm_extra_conf.py
+.ycm_extra_conf.pyc
