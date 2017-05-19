@@ -1,7 +1,7 @@
 BIN_DIR						=		bin
 BUILD_DIR					=		build
 DOC_DIR						=		doc
-INC_DIR						=		include
+INC_DIR						=		src
 LIB_DIR 					=		lib
 SPIKE_DIR 				=		spike
 SRC_DIR 					=		src

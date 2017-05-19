@@ -1,5 +1,5 @@
 BUILD_DIR			=		../build
-INC_DIR				=		../include
+INC_DIR				=		../src
 LIB_DIR 			=		../lib
 SRC_DIR 			=		../src
 TEST_DIR 			=		.
