@@ -30,7 +30,7 @@ DOXYFILE 					=		Doxyfile
 
 .PRECIOUS: $(COMPILED_HEADERS)
 
-all: tree_setup $(RELEASE) $(DEBUG) .tags docs
+all: tree_setup $(RELEASE) $(DEBUG) .tags
 
 .tags:
 	ctags -R -f .tags
@@ -66,7 +66,7 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/* .tags
-	$(RM) -rf $(COV_DIR)/* $(DOC_DIR)/html $(DOC_DIR)/latex
+	$(RM) -rf $(COV_DIR)/* $(DOC_DIR)/html $(DOC_DIR)/latex gmon.out
 
 profile: $(DEBUG)
 	./tools/profile.sh 100
