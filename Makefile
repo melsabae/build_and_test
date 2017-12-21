@@ -30,7 +30,7 @@ DOXYFILE 					=		Doxyfile
 
 .PRECIOUS: $(COMPILED_HEADERS)
 
-all: tree_setup $(RELEASE) $(DEBUG) .tags
+all: tree_setup $(RELEASE) $(DEBUG) .tags docs
 
 .tags:
 	ctags -R -f .tags
