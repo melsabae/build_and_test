@@ -30,7 +30,9 @@ DOXYFILE 					=		Doxyfile
 
 .PRECIOUS: $(COMPILED_HEADERS)
 
-all: tree_setup $(RELEASE) $(DEBUG)
+all: tree_setup $(RELEASE) $(DEBUG) .tags
+
+.tags:
 	ctags -R -f .tags
 
 dobjects: $(DOBJECTS)
@@ -64,7 +66,7 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 	$(CC) -c -x c-header -o $@ $<
 
 clean:
-	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/*
+	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/* .tags
 	$(RM) -rf $(COV_DIR)/*
 
 profile: $(DEBUG)
