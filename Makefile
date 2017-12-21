@@ -31,6 +31,8 @@ DOXYFILE 					=		Doxyfile
 .PRECIOUS: $(COMPILED_HEADERS)
 
 all: tree_setup $(RELEASE) $(DEBUG)
+	ctags -R -f .tags
+
 dobjects: $(DOBJECTS)
 
 tree_setup:
