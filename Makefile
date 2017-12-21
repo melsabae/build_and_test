@@ -44,14 +44,13 @@ tree_setup:
 test: $(DEBUG)
 release: $(RELEASE)
 debug: $(DEBUG)
-docs: $(DOCS)
+
+docs:
+	doxygen $(DOXYFILE)
 
 $(RELEASE): $(OBJECTS)
 	$(CC) -o $(RELEASE) $(CFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(OBJECTS)
 	strip -sxX $(RELEASE)
-
-$(DOCS):
-	doxygen $(DOXYFILE)
 
 $(DEBUG): $(DOBJECTS)
 	$(CC) -o $(DEBUG) $(DFLAGS) $(LDIR) $(INC_PATH) $(LFLAGS) $(DOBJECTS)
@@ -67,7 +66,7 @@ $(BUILD_DIR)/%.h.gch: $(INC_DIR)/%.h
 
 clean:
 	$(RM) $(RELEASE) $(DEBUG) $(OBJECTS) $(COMPILED_HEADERS) $(DBG_DIR)/* .tags
-	$(RM) -rf $(COV_DIR)/*
+	$(RM) -rf $(COV_DIR)/* $(DOC_DIR)/html $(DOC_DIR)/latex
 
 profile: $(DEBUG)
 	./tools/profile.sh 100
